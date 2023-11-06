@@ -46,6 +46,10 @@ function Card({ recipe, popUp }) {
     if (moreDetailsRecipeId) {
       renderCardDetails();
     }
+    return () => {
+    
+      setNutrition({});
+    };
   }, [moreDetailsRecipeId]);
 
   function handleParentClick(e) {
@@ -116,7 +120,7 @@ function Card({ recipe, popUp }) {
             exit={{
               opacity: 0,
             }}
-            transition={{ duration: 0.1 }}
+            transition={{ duration: 0.2 }}
           >
             <CardDetails
               recipe={recipe}
