@@ -2,6 +2,7 @@ import { arrayOf, shape, number, string, func, bool } from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 
+
 function CardDetails({ recipe, nutrition, setToggleCardDetails, setPopUp }) {
   function isEmpty(obj) {
     for (const prop in obj) {

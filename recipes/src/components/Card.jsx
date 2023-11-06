@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { arrayOf, shape, number, string, bool } from "prop-types";
 import CardDetails from "./CardDetails";
+import { motion, AnimatePresence } from "framer-motion";
 
 function Card({ recipe, popUp }) {
   const setPopUp = popUp;
@@ -8,7 +9,7 @@ function Card({ recipe, popUp }) {
   const [moreDetailsRecipeId, setMoreDetailsRecipeId] = useState(0);
   const [nutrition, setNutrition] = useState({});
 
-  const fetchData = async recipeId => {
+  const fetchData = async (recipeId) => {
     const url = `https://tasty.p.rapidapi.com/recipes/get-more-info?id=${recipeId}`;
     const options = {
       method: "GET",
@@ -56,19 +57,23 @@ function Card({ recipe, popUp }) {
 
   return (
     <>
-    
-   <div className="flex flex-col border-solid overflow-hidden shadow-lg m-6 w-[360px] md:w-[400px] h-[480px] bg-Pewter">
+      <div className="flex flex-col border-solid overflow-hidden shadow-lg m-6 w-[360px] md:w-[400px] h-[480px] bg-Pewter">
         <a
           className="hover:bg-Freesia h-full transition-all duration-500 cursor-pointer"
           onClick={() => {
             setMoreDetailsRecipeId(recipe.id);
           }}
         >
-          <img
-            className="object-cover w-full h-80"
-            src={recipe.thumbnail_url}
-            alt={"dish" + recipe.id}
-          />
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
+          >
+            <img
+              className="object-cover w-full h-80"
+              src={recipe.thumbnail_url}
+              alt={"dish" + recipe.id}
+            />
+          </motion.div>
           <div className="grow flex flex-col text-right p-8 md:p-7 lg:p-8 justify-start">
             <span className="p-2 text-xs sm:text-sm md:text-md font-bold">
               {recipe.name}
@@ -101,14 +106,27 @@ function Card({ recipe, popUp }) {
         ></div>
       )}
       {/* Create the popup */}
-      {toggleCardDetails && (
-        <CardDetails
-          recipe={recipe}
-          nutrition={nutrition}
-          setToggleCardDetails={setToggleCardDetails}
-          setPopUp={setPopUp}
-        />
-      )}
+      <AnimatePresence>
+        {toggleCardDetails && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: 1,
+            }}
+            exit={{
+              opacity: 0,
+            }}
+            transition={{ duration: 0.1 }}
+          >
+            <CardDetails
+              recipe={recipe}
+              nutrition={nutrition}
+              setToggleCardDetails={setToggleCardDetails}
+              setPopUp={setPopUp}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
